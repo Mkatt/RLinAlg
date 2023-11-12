@@ -3,7 +3,7 @@
 Muhammad (mk817a), Jeremy (jeremy19), Aneesh (amovva2)
 
 ## Goals
-Our goal with this project is to create a well defined linear algebra library. We've chosen to work on this because currently there isn't one in rust right now.
+Our goal with this project is to create a well defined linear algebra library. We've chosen to work on this because currently there aren't ones as functional as Pythons numpy.linalg.
 
 ## Timeline and Overveiw
 
