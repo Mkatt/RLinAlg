@@ -17,6 +17,7 @@ Our goal with this project is to create a well defined linear algebra library. W
   - Special matrices.
   - Decompositions
   - Eigenproblems
+  - Normalize vectors
 
 - End
   - Solvers
