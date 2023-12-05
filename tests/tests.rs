@@ -32,7 +32,7 @@ mod tests {
         let b = Matrix {
             data: Array2::from_shape_vec((3, 2), vec![4.0, 3.0, 2.0, 1.0, 0.0, -1.0]).unwrap(),
         };
-        a.add(&b);
+        assert!(a.add(&b).is_err());
     }
 
     #[test]
@@ -58,7 +58,7 @@ mod tests {
         let b = Matrix {
             data: Array2::from_shape_vec((2, 2), vec![7.0, 8.0, 9.0, 10.0]).unwrap(),
         };
-        a.multiply(&b);
+        assert!(a.multiply(&b).is_err());
     }
 
     #[test]
@@ -98,7 +98,7 @@ mod tests {
         let b = Vector {
             data: Array1::from_vec(vec![4.0, 5.0]),
         };
-        a.dot(&b);
+        assert!(a.dot(&b).is_err());
     }
     #[test]
     fn test_vector_magnitude_zero() {
