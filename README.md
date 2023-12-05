@@ -8,16 +8,16 @@ Our goal with this project is to create a well defined linear algebra library. W
 ## Timeline and Overveiw
 
 - Checkpoint 1
-  - Vector Addition, dot product, magnitude
-  - Matrix addition, multiplication
+ `` - Vector Addition, dot product, magnitude``
+ `` - Matrix addition, multiplication``
 
 - Checkpoint 2
-  - Transposition
-  - Determinants and Inverses
-  - Special matrices.
-  - Decompositions
-  - Eigenproblems
-  - Normalize vectors
+``  - Transposition``
+  ``- Determinants``
+  ``- Inverses``
+ `` - Special matrices.``
+  ``- Decompositions``
+``  - Eigenproblems``
 
 - End
   - Solvers
@@ -33,6 +33,7 @@ Breakdowns of the features:
 
 Decompositions:
 - LU (Lower-Upper)
+- (QR, cholesky, SVD to dificult)
 - QR (Orthogonal-Right Triangular)
 - Cholesky
 - SVD (Singular Value Decomposition)
@@ -55,7 +56,6 @@ Norms and Other Numbers:
 - Rank
 
 Special Matrices:
-- Diagonal matrices
 - Identity matrices
 - Zero matrices
 
