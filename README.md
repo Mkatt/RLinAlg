@@ -8,20 +8,20 @@ Our goal with this project is to create a well defined linear algebra library. W
 ## Timeline and Overveiw
 
 - Checkpoint 1
- `` - Vector Addition, dot product, magnitude``
- `` - Matrix addition, multiplication``
+  ~~- Vector Addition, dot product, magnitude~~
+  ~~- Matrix addition, multiplication~~
 
 - Checkpoint 2
-``  - Transposition``
-  ``- Determinants``
-  ``- Inverses``
- `` - Special matrices.``
-  ``- Decompositions``
-``  - Eigenproblems``
+   ~~- Transposition~~
+  ~~- Determinants~~
+  ~~- Inverses~~
+  ~~- Special matrices.~~
+  ~~- Decompositions~~
+  - Eigenproblems
 
 - End
   - Solvers
-  - Norms
+  ~~- Norms~~
   - Tensor
   - Statistical methods
   - Sparse matrix
