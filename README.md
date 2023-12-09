@@ -17,15 +17,15 @@ Our goal with this project is to create a well defined linear algebra library. W
   ~~- Inverses~~
   ~~- Special matrices.~~
   ~~- Decompositions~~
-  - Eigenproblems
+  ~~- Eigenproblems~~
 
 - End
-  - Solvers
+   ~~- Solvers~~
   ~~- Norms~~
   - Tensor
   - Statistical methods
   - Sparse matrix
-  - Kroeneker Product
+  ~~- Kroeneker Product~~
   - Advanced Algorithms
   - Optimization problems
 
