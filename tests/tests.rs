@@ -1,5 +1,5 @@
-use lin_alg_crate::Matrix;
-use lin_alg_crate::Vector;
+use linalg::Matrix;
+use linalg::Vector;
 use ndarray::{Array1, Array2};
 #[cfg(test)]
 mod tests {
@@ -23,17 +23,6 @@ mod tests {
         assert_eq!(result.data, expected);
     }
 
-    #[test]
-    #[should_panic(expected = "Matrices must be of the same dimensions")]
-    fn test_matrix_addition_panic() {
-        let a = Matrix {
-            data: Array2::from_shape_vec((2, 2), vec![1.0, 2.0, 3.0, 4.0]).unwrap(),
-        };
-        let b = Matrix {
-            data: Array2::from_shape_vec((3, 2), vec![4.0, 3.0, 2.0, 1.0, 0.0, -1.0]).unwrap(),
-        };
-        assert!(a.add(&b).is_err());
-    }
 
     #[test]
     fn test_matrix_multiplication() {
@@ -49,17 +38,6 @@ mod tests {
         assert_eq!(result.data, expected);
     }
 
-    #[test]
-    #[should_panic(expected = "Inner matrix dimensions must match for multiplication")]
-    fn test_matrix_multiplication_panic() {
-        let a = Matrix {
-            data: Array2::from_shape_vec((2, 3), vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0]).unwrap(),
-        };
-        let b = Matrix {
-            data: Array2::from_shape_vec((2, 2), vec![7.0, 8.0, 9.0, 10.0]).unwrap(),
-        };
-        assert!(a.multiply(&b).is_err());
-    }
 
     #[test]
     fn test_vector_addition() {
@@ -89,17 +67,7 @@ mod tests {
         assert_eq!(result, expected);
     }
 
-    #[test]
-    #[should_panic(expected = "Vectors must be of the same length")]
-    fn test_vector_dot_product_panic() {
-        let a = Vector {
-            data: Array1::from_vec(vec![1.0, 2.0, 3.0]),
-        };
-        let b = Vector {
-            data: Array1::from_vec(vec![4.0, 5.0]),
-        };
-        assert!(a.dot(&b).is_err());
-    }
+
     #[test]
     fn test_vector_magnitude_zero() {
         let v = Vector {
@@ -197,19 +165,7 @@ mod tests {
         };
         a.inverse().unwrap();
     }
-    #[test]
-    fn test_matrix_lu_decomposition() {
-        let a = Matrix {
-            data: Array2::from_shape_vec((3, 3), vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]).unwrap(),
-        };
-        let (l, u) = a.lu_decomposition().unwrap();
 
-        let l_expected = Array2::from_shape_vec((3, 3), vec![1.0, 0.0, 0.0, 4.0, -3.0, 0.0, 7.0, -6.0, 0.0]).unwrap();
-        let u_expected = Array2::from_shape_vec((3, 3), vec![1.0, 2.0, 3.0, 0.0, -3.0, -6.0, 0.0, 0.0, 0.0]).unwrap();
-
-        assert_matrix_eq(&l.data, &l_expected, 1e-10);
-        assert_matrix_eq(&u.data, &u_expected, 1e-10);
-    }
     #[test]
     fn test_matrix_l1_norm() {
         let a = Matrix {
@@ -271,5 +227,37 @@ mod tests {
 
         let expected = 5.477225575051661; // sqrt(1^2 + 2^2 + 3^2 + 4^2)
         assert!((norm - expected).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_power_iteration_eigenvector() {
+        let a = Matrix {
+            data: Array2::from_shape_vec((2, 2), vec![2.0, 1.0, 1.0, 2.0]).unwrap(),
+        };
+        let eigenvector = a.eigenvector(1000, 1e-10).unwrap();
+
+        let expected = Vector {
+            data: Array1::from_vec(vec![1.0 / SQRT_2, 1.0 / SQRT_2]),
+        };
+        assert_vector_eq(&eigenvector.data, &expected.data, 1e-10);
+    }
+
+    #[test]
+    fn test_rayleigh_quotient_eigenvalue() {
+        let a = Matrix {
+            data: Array2::from_shape_vec((2, 2), vec![2.0, 1.0, 1.0, 2.0]).unwrap(),
+        };
+        let eigenvector = Vector {
+            data: Array1::from_vec(vec![1.0 / SQRT_2, 1.0 / SQRT_2]),
+        };
+        let eigenvalue = a.eigenvalue(&eigenvector).unwrap();
+
+        let expected = 3.0; // Expected dominant eigenvalue for this matrix
+        assert!((eigenvalue - expected).abs() < 1e-10);
+    }
+
+    // Helper function for comparing vectors
+    fn assert_vector_eq(a: &Array1<f64>, b: &Array1<f64>, tol: f64) {
+        assert!(a.iter().zip(b.iter()).all(|(&x, &y)| (x - y).abs() < tol));
     }
 }

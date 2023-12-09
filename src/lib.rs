@@ -201,6 +201,74 @@ impl Matrix {
     pub fn trace(&self) -> f64 {
         self.data.diag().iter().sum()
     }
+
+    pub fn eigenvector(&self, max_iters: usize, tolerance: f64) -> Result<Vector, String> {
+        let mut b_k = Vector {
+            data: Array1::from_vec(vec![1.0; self.data.nrows()]),
+        };
+    
+        for _ in 0..max_iters {
+            let mut b_k1 = self.multiply_vector(&b_k)?;
+            let norm = b_k1.magnitude();
+            
+            b_k1.data.par_iter_mut().for_each(|val| *val /= norm);
+    
+            if (&b_k1.data - &b_k.data).par_iter().all(|&x| x.abs() < tolerance) {
+                return Ok(b_k1);
+            }
+            b_k = b_k1;
+        }
+    
+        Err("Power iteration did not converge".to_string())
+    }
+
+    pub fn eigenvalue(&self, v: &Vector) -> Result<f64, String> {
+        let numerator = self.multiply_vector(v)?.dot(v)?;
+        let denominator = v.dot(v)?;
+
+        if denominator == 0.0 {
+            return Err("Denominator in Rayleigh quotient is zero".to_string());
+        }
+
+        Ok(numerator / denominator)
+    }
+
+    fn multiply_vector(&self, v: &Vector) -> Result<Vector, String> {
+        if self.data.ncols() != v.data.len() {
+            return Err("Matrix and vector dimensions must match".to_string());
+        }
+    
+        let result_data: Vec<f64> = self.data.axis_iter(ndarray::Axis(0))
+            .into_par_iter()
+            .map(|row| row.iter().zip(v.data.iter()).map(|(&a, &b)| a * b).sum())
+            .collect();
+    
+        Ok(Vector {
+            data: Array1::from(result_data),
+        })
+    }
+
+    pub fn kronecker_product(&self, other: &Matrix) -> Matrix {
+        let (a_rows, a_cols) = self.data.dim();
+        let (b_rows, b_cols) = other.data.dim();
+
+        let mut result = Array2::<f64>::zeros((a_rows * b_rows, a_cols * b_cols));
+
+        for a_row in 0..a_rows {
+            for a_col in 0..a_cols {
+                for b_row in 0..b_rows {
+                    for b_col in 0..b_cols {
+                        result[[a_row * b_rows + b_row, a_col * b_cols + b_col]] = 
+                            self.data[[a_row, a_col]] * other.data[[b_row, b_col]];
+                    }
+                }
+            }
+        }
+
+        Matrix { data: result }
+    }
+
+
 }
 
 #[derive(Clone)]
