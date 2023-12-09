@@ -20,7 +20,7 @@ Our goal with this project is to create a well defined linear algebra library. W
   ~~- Eigenproblems~~
 
 - End
-   ~~- Solvers~~
+  - Solvers
   ~~- Norms~~
   - Tensor
   - Statistical methods
